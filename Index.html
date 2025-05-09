@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Animation + localStorage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    body.light {
+      background-color: #fff;
+      color: #333;
+    }
+
+    body.dark {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .animate-button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .animate-button:hover {
+      transform: scale(1.1);
+    }
+
+    .fade {
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="fade">Welcome!</h1>
+  <button class="animate-button" onclick="toggleTheme()">Toggle Theme</button>
+
+  <script>
+    // Load theme from localStorage
+    function loadTheme() {
+      const theme = localStorage.getItem('theme') || 'light';
+      document.body.classList.add(theme);
+    }
+
+    // Toggle theme and store preference
+    function toggleTheme() {
+      const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.body.classList.remove(currentTheme);
+      document.body.classList.add(newTheme);
+      localStorage.setItem('theme', newTheme);
+
+      // Trigger animation
+      document.querySelector('h1').classList.remove('fade');
+      void document.querySelector('h1').offsetWidth; // Force reflow
+      document.querySelector('h1').classList.add('fade');
+    }
+
+    // Initialize
+    loadTheme();
+  </script>
+</body>
+  </html>
